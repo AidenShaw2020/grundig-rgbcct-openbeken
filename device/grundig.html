@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grundig RGB + CCT</title>
+<style>
+:root{color-scheme:light;--ink:#182c28;--muted:#586a64;--line:#ced9d4;--accent:#176b58;--paper:#f3f6f4;--error:#a13235}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Bahnschrift,"Trebuchet MS",sans-serif;letter-spacing:0;font-size:15px}
+header{background:var(--ink);color:white;padding:22px max(20px,calc((100% - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}h1{font-size:25px;line-height:1.2;margin:0;font-weight:600}header a{color:#bde4d6;font-size:13px}
+main{max-width:1120px;margin:auto;padding:22px 20px 36px}section{padding:20px 0;border-bottom:1px solid var(--line)}h2{font-size:18px;margin:0 0 18px;font-weight:600}button,input{font:inherit;accent-color:var(--accent)}button,a,input{touch-action:manipulation}button{padding:11px 15px;border:1px solid var(--accent);background:var(--accent);color:white;border-radius:4px;cursor:pointer;min-height:44px}button:disabled{opacity:.45;cursor:default}input:disabled{opacity:.4}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #d49948;outline-offset:3px}fieldset{border:0;margin:0;padding:0;min-width:0}input[type=color]{width:64px;height:44px;padding:3px;border:1px solid var(--line);border-radius:4px;background:white;cursor:pointer}input[type=range]{display:block;width:100%;min-width:0;height:30px}input[type=checkbox]{width:22px;height:22px;margin:0;flex-shrink:0;cursor:pointer}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px;flex-wrap:wrap}#status{color:var(--muted);margin:0;max-width:100%;overflow-wrap:anywhere}#status.error{color:var(--error)}.secondary{background:transparent;color:var(--accent)}.modes{display:flex;gap:0;max-width:390px;border:1px solid var(--line);border-radius:4px;overflow:hidden}.modes label{flex:1;position:relative;cursor:pointer;text-align:center;min-width:0}.modes input{position:absolute;opacity:0;inset:0;margin:0;width:100%;height:100%;cursor:pointer}.modes span{display:block;padding:12px 14px;min-height:44px}.modes input:checked+span{background:var(--accent);color:white}.modes input:focus-visible+span{outline:3px solid #d49948;outline-offset:-3px}
+.strip{width:100%;height:36px;display:block;margin-top:20px;border-radius:3px;background:#16221d}.settings{display:grid;grid-template-columns:1fr 1fr;gap:35px}.control{margin:16px 0}.control>label{display:flex;justify-content:space-between;gap:12px;margin-bottom:5px}.ends{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.global{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.segments{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 20px}.segment{padding:15px 0;border-top:1px solid var(--line);min-width:0;min-height:100px}.segment-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.segment-top label{display:flex;align-items:center;gap:8px;font-size:13px}.segment-color{display:flex;align-items:center;gap:10px}.segment-color output{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}footer{padding-top:20px;font-size:12px;color:var(--muted)}.heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.heading-row h2{margin-bottom:14px}
+@media(max-width:760px){.segments{grid-template-columns:repeat(3,minmax(0,1fr))}.settings{gap:25px}h1{font-size:22px}}
+@media(max-width:520px){header{padding:20px;align-items:flex-start}header a{padding-top:4px}.settings{grid-template-columns:1fr;gap:0}.segments{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}main{padding:16px 16px 30px}.topline{align-items:flex-start}h1{font-size:20px}.segment-color{gap:7px}.segment-color input{width:54px}button{font-size:14px}.topline button{width:100%}}
+</style>
+</head>
+<body>
+<header><h1>Grundig RGB + CCT</h1><a href="/">OpenBeken</a></header>
+<main>
+<div class="topline"><p id="status" role="status" aria-live="polite">P&#345;ipojuji...</p><button type="button" class="secondary" id="save" disabled>Ulo&#382;it pro restart</button></div>
+<fieldset id="controls" disabled>
+<section aria-label="Rezim">
+<div class="modes" role="radiogroup" aria-label="Rezim svetla">
+<label><input type="radio" name="mode" value="0"><span>Vypnuto</span></label>
+<label><input type="radio" name="mode" value="1"><span>RGB</span></label>
+<label><input type="radio" name="mode" value="2"><span>B&#237;l&#225;</span></label>
+<label><input type="radio" name="mode" value="3"><span>PixelAnim</span></label>
+</div>
+<canvas class="strip" id="strip" width="1080" height="36" role="img" aria-label="Vystupni barvy 25 segmentu"></canvas>
+</section>
+<div class="settings">
+<section><h2>Spole&#269;n&#233; RGB</h2>
+<div class="global"><input type="color" id="global-color" value="#180000" aria-label="Spolecna RGB barva"><button type="button" id="apply-global">P&#345;epsat v&#353;ech 25 segment&#367;</button></div>
+<div class="control"><label for="rgb-brightness">Jas RGB <output id="rgb-value">100 %</output></label><input type="range" id="rgb-brightness" min="0" max="100" value="100"></div>
+</section>
+<section><h2>B&#237;l&#225;</h2>
+<div class="control"><label for="white-brightness">Jas b&#237;l&#233; <output id="white-value">10 %</output></label><input type="range" id="white-brightness" min="0" max="100" value="10"></div>
+<div class="control"><label for="temperature">Teplota <output id="temperature-value">50 % CW</output></label><input type="range" id="temperature" min="0" max="100" value="50"><div class="ends"><span>Tepl&#225;</span><span>Studen&#225;</span></div></div>
+</section>
+</div>
+<section><div class="heading-row"><h2>Segmenty</h2><span>25 &times; 20 cm</span></div><div class="segments" id="segments"></div></section>
+</fieldset>
+<footer id="saved-status"></footer>
+</main>
+<script>
+'use strict';
+const byId = id => document.getElementById(id);
+const persistentChannels = [0, ...Array.from({length: 50}, (_, index) => index + 1), 52, 53, 54, 60, 61, 62];
+const stateChannels = [...persistentChannels, 51, 56, 57, 58, 59];
+let state = null;
+let busy = false;
+let connected = false;
+let failure = '';
+let commandQueue = Promise.resolve();
+
+function colorHex(value) { return '#' + value.toString(16).padStart(6, '0'); }
+function validateState(values) {
+    for (const channel of stateChannels) {
+        if (!Number.isInteger(values[channel])) throw Error('Neplatny stav kanalu ' + channel);
+    }
+    for (let segment = 1; segment <= 25; segment++) {
+        if (values[segment] < 0 || values[segment] > 16777215 || ![0, 1].includes(values[segment + 25])) throw Error('Neplatny stav segmentu ' + segment);
+    }
+    if (![0, 1, 2, 3].includes(values[51]) || [52, 53, 54, 61].some(channel => values[channel] < 0 || values[channel] > 100)) throw Error('Neplatne nastaveni svetla');
+    if (values[0] < 0 || values[0] > 5 || values[60] < 0 || values[60] > 16777215 || values[62] < 0 || values[62] > 10) throw Error('Neplatne nastaveni animace');
+    return values;
+}
+function stateFile(values) {
+    return persistentChannels.map(channel => 'SetChannel ' + channel + ' ' + values[channel]).join('\n') + '\nSetChannel 63 1\nreturn\n';
+}
+function command(text) {
+    const pending = commandQueue.then(() => sendCommand(text));
+    commandQueue = pending.catch(() => {});
+    return pending;
+}
+async function sendCommand(text) {
+    let response;
+    let content;
+    let lastError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            response = await fetch('/cmd_tool?cmd=' + encodeURIComponent(text) + '&fresh=' + Date.now(), {cache: 'no-store', signal: AbortSignal.timeout(6000)});
+            content = await response.text();
+            break;
+        } catch (error) { lastError = error; }
+    }
+    if (content === undefined) throw lastError;
+    if (!response.ok) throw Error('HTTP ' + response.status);
+    const parsed = new DOMParser().parseFromString(content, 'text/html');
+    parsed.querySelectorAll('script').forEach(script => script.remove());
+    const output = parsed.body.textContent;
+    if (/Error:|Unknown command|Invalid command/i.test(output)) throw Error('Chyba prikazu ridice');
+    return output;
+}
+async function readChannels(channels) {
+    let lastError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            const output = await command('echo GRUNDIG_STATE ' + channels.map(channel => '$CH' + channel).join(' '));
+            const line = output.match(/GRUNDIG_STATE ([^\n]+)/);
+            const values = line ? line[1].trim().split(/\s+/).map(Number) : [];
+            if (values.length !== channels.length || values.some(value => !Number.isFinite(value))) throw Error('Neuplna odpoved ridice');
+            return Object.fromEntries(channels.map((channel, index) => [channel, values[index]]));
+        } catch (error) { lastError = error; }
+    }
+    throw lastError;
+}
+function availability() {
+    byId('controls').disabled = busy || !connected;
+    byId('save').disabled = busy || !connected;
+}
+function status(message, error = false) {
+    byId('status').textContent = message;
+    byId('status').classList.toggle('error', error);
+}
+function paint(values) {
+    document.querySelector('input[name=mode][value="' + values[51] + '"]').checked = true;
+    for (const [id, channel, suffix] of [['rgb-brightness', 52, ' %'], ['white-brightness', 53, ' %'], ['temperature', 54, ' % CW']]) {
+        byId(id).value = values[channel];
+        byId(id === 'temperature' ? 'temperature-value' : id === 'rgb-brightness' ? 'rgb-value' : 'white-value').textContent = values[channel] + suffix;
+    }
+    for (let segment = 1; segment <= 25; segment++) {
+        byId('color-' + segment).value = colorHex(values[segment]);
+        byId('hex-' + segment).textContent = colorHex(values[segment]).toUpperCase();
+        byId('on-' + segment).checked = values[segment + 25] !== 0;
+    }
+    if (values[57] !== values[58]) return;
+    const canvas = byId('strip');
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#16221d';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    if (values[51] === 3) {
+        context.fillStyle = '#bde4d6';
+        context.font = '14px Bahnschrift, sans-serif';
+        context.fillText('PixelAnim', 12, 24);
+        return;
+    }
+    for (let segment = 1; segment <= 25; segment++) {
+        const packed = values[segment];
+        let rgb = [(packed >> 16) & 255, (packed >> 8) & 255, packed & 255];
+        if (values[51] === 1) rgb = rgb.map(value => Math.trunc(value * values[52] / 100) * values[segment + 25]);
+        else if (values[51] === 2) {
+            const brightness = Math.trunc(values[53] * 255 / 100);
+            rgb = [brightness, Math.trunc(brightness * (0.72 + values[54] * 0.0028)), Math.trunc(brightness * (0.38 + values[54] * 0.0062))];
+        } else rgb = [0, 0, 0];
+        context.fillStyle = 'rgb(' + rgb.join(',') + ')';
+        const width = canvas.width / 25;
+        context.fillRect((segment - 1) * width + 1, 2, width - 2, canvas.height - 4);
+    }
+}
+async function refresh() {
+    const values = validateState(await readChannels(stateChannels));
+    if (busy) return values;
+    if (values[59] !== 0) throw Error('Ridic prave zpracovava jinou zmenu');
+    state = values;
+    connected = values[56] === (values[51] === 3 ? 2 : 1) && values[57] === values[58];
+    paint(values);
+    availability();
+    if (failure) status(failure, true);
+    else status(connected ? ['P\u0159ipojeno \u00b7 Vypnuto', 'P\u0159ipojeno \u00b7 RGB', 'P\u0159ipojeno \u00b7 B\u00edl\u00e1', 'P\u0159ipojeno \u00b7 PixelAnim'][values[51]] : '\u010cek\u00e1m na potvrzen\u00ed rendereru...');
+    return values;
+}
+async function writeValues(values, token) {
+    const entries = Object.entries(values);
+    for (let offset = 0; offset < entries.length; offset += 6) {
+        const chunk = entries.slice(offset, offset + 6);
+        let verified = false;
+        for (let attempt = 0; attempt < 3; attempt++) {
+            const current = await readChannels([59]);
+            if (current[59] !== token) throw Error('Vyprsel zamek zmeny');
+            const commands = chunk.map(([channel, value]) => 'SetChannel ' + channel + ' ' + value).join('; ');
+            await command('if $CH59==' + token + ' then "backlog ' + commands + '"');
+            const actual = await readChannels([...chunk.map(([channel]) => Number(channel)), 59]);
+            if (actual[59] !== token) throw Error('Vyprsel zamek zmeny');
+            verified = chunk.every(([channel, value]) => actual[channel] === value);
+            if (verified) break;
+        }
+        if (!verified) throw Error('Ridic nepotvrdil zapis hodnot');
+    }
+}
+async function locked(task) {
+    if (busy || !connected) return;
+    busy = true;
+    failure = '';
+    availability();
+    status('Odes\u00edl\u00e1m...');
+    const token = 1 + Math.floor(Math.random() * 16000000);
+    let original = null;
+    let owned = false;
+    try {
+        await command('if $CH59==0 then SetChannel 59 ' + token);
+        owned = (await readChannels([59]))[59] === token;
+        if (!owned) throw Error('Ridic pouziva jiny klient');
+        original = validateState(await readChannels(stateChannels));
+        await task(original, token);
+        await command('if $CH59==' + token + ' then "backlog AddChannel 57 1; SetChannel 59 0"');
+        const deadline = Date.now() + 10000;
+        while (true) {
+            const values = await readChannels([51, 56, 57, 58, 59]);
+            if (values[56] === (values[51] === 3 ? 2 : 1) && values[57] === original[57] + 1 && values[57] === values[58] && values[59] === 0) break;
+            if (Date.now() > deadline) throw Error('Renderer nepotvrdil vystup');
+            await new Promise(resolve => setTimeout(resolve, 150));
+        }
+    } catch (error) {
+        failure = 'Zm\u011bna nepotvrzena: ' + error.message;
+        try {
+            if (owned && (await readChannels([59]))[59] === token) {
+                if (original) await writeValues(Object.fromEntries([...persistentChannels, 51].map(channel => [channel, channel === 51 ? 0 : original[channel]])), token);
+                await command('if $CH59==' + token + ' then "backlog AddChannel 57 1; SetChannel 59 0"');
+            }
+        } catch (_) {}
+    } finally {
+        busy = false;
+        try { await refresh(); } catch (error) { connected = false; availability(); status(failure || error.message, true); }
+    }
+}
+function change(values) {
+    return locked(async (original, token) => {
+        validateState({...original, ...values});
+        await writeValues(values, token);
+    });
+}
+async function save() {
+    await locked(async values => {
+        const content = stateFile(values);
+        const url = '/api/lfs/grundig-state.bat';
+        const response = await fetch(url, {method: 'POST', body: content, signal: AbortSignal.timeout(6000)});
+        if (!response.ok) throw Error('Ulozeni selhalo');
+        const stored = await (await fetch(url + '?fresh=' + Date.now(), {cache: 'no-store', signal: AbortSignal.timeout(6000)})).text();
+        if (stored !== content) throw Error('Ulozeny soubor nesouhlasi');
+        byId('saved-status').textContent = 'Ulo\u017eeno ' + new Date().toLocaleTimeString('cs-CZ');
+    });
+}
+for (let segment = 1; segment <= 25; segment++) {
+    const item = document.createElement('article');
+    item.className = 'segment';
+    item.innerHTML = '<div class="segment-top"><strong>' + String(segment).padStart(2, '0') + '</strong><label><input type="checkbox" id="on-' + segment + '" aria-label="Segment ' + segment + ' zapnuty"> ON</label></div><div class="segment-color"><input type="color" id="color-' + segment + '" aria-label="Barva segmentu ' + segment + '"><output id="hex-' + segment + '"></output></div>';
+    byId('segments').append(item);
+    byId('on-' + segment).addEventListener('change', event => change({[segment + 25]: Number(event.target.checked)}));
+    byId('color-' + segment).addEventListener('change', event => change({[segment]: parseInt(event.target.value.slice(1), 16)}));
+}
+document.querySelectorAll('input[name=mode]').forEach(input => input.addEventListener('change', () => change({51: Number(input.value)})));
+for (const [id, channel, output, suffix] of [['rgb-brightness', 52, 'rgb-value', ' %'], ['white-brightness', 53, 'white-value', ' %'], ['temperature', 54, 'temperature-value', ' % CW']]) {
+    byId(id).addEventListener('input', event => { byId(output).textContent = event.target.value + suffix; });
+    byId(id).addEventListener('change', event => change({[channel]: Number(event.target.value)}));
+}
+byId('apply-global').addEventListener('click', () => {
+    const color = parseInt(byId('global-color').value.slice(1), 16);
+    const values = {60: color};
+    for (let segment = 1; segment <= 25; segment++) { values[segment] = color; values[segment + 25] = 1; }
+    change(values);
+});
+byId('save').addEventListener('click', save);
+async function poll() {
+    try { if (!busy) await refresh(); }
+    catch (error) { if (!busy) { connected = false; availability(); status(error.message, true); } }
+    setTimeout(poll, 3000);
+}
+poll();
+</script>
+</body>
+</html>

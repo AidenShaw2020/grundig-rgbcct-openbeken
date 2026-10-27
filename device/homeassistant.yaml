@@ -1,0 +1,876 @@
+{
+  "mqtt": [
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 01",
+        "unique_id": "grundig_led_grundig_segment01",
+        "state_topic": "grundig_led/grundig/segment01/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 1 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 26 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 26 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 02",
+        "unique_id": "grundig_led_grundig_segment02",
+        "state_topic": "grundig_led/grundig/segment02/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 2 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 27 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 27 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 03",
+        "unique_id": "grundig_led_grundig_segment03",
+        "state_topic": "grundig_led/grundig/segment03/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 3 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 28 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 28 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 04",
+        "unique_id": "grundig_led_grundig_segment04",
+        "state_topic": "grundig_led/grundig/segment04/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 4 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 29 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 29 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 05",
+        "unique_id": "grundig_led_grundig_segment05",
+        "state_topic": "grundig_led/grundig/segment05/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 5 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 30 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 30 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 06",
+        "unique_id": "grundig_led_grundig_segment06",
+        "state_topic": "grundig_led/grundig/segment06/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 6 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 31 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 31 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 07",
+        "unique_id": "grundig_led_grundig_segment07",
+        "state_topic": "grundig_led/grundig/segment07/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 7 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 32 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 32 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 08",
+        "unique_id": "grundig_led_grundig_segment08",
+        "state_topic": "grundig_led/grundig/segment08/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 8 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 33 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 33 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 09",
+        "unique_id": "grundig_led_grundig_segment09",
+        "state_topic": "grundig_led/grundig/segment09/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 9 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 34 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 34 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 10",
+        "unique_id": "grundig_led_grundig_segment10",
+        "state_topic": "grundig_led/grundig/segment10/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 10 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 35 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 35 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 11",
+        "unique_id": "grundig_led_grundig_segment11",
+        "state_topic": "grundig_led/grundig/segment11/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 11 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 36 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 36 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 12",
+        "unique_id": "grundig_led_grundig_segment12",
+        "state_topic": "grundig_led/grundig/segment12/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 12 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 37 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 37 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 13",
+        "unique_id": "grundig_led_grundig_segment13",
+        "state_topic": "grundig_led/grundig/segment13/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 13 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 38 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 38 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 14",
+        "unique_id": "grundig_led_grundig_segment14",
+        "state_topic": "grundig_led/grundig/segment14/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 14 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 39 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 39 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 15",
+        "unique_id": "grundig_led_grundig_segment15",
+        "state_topic": "grundig_led/grundig/segment15/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 15 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 40 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 40 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 16",
+        "unique_id": "grundig_led_grundig_segment16",
+        "state_topic": "grundig_led/grundig/segment16/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 16 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 41 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 41 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 17",
+        "unique_id": "grundig_led_grundig_segment17",
+        "state_topic": "grundig_led/grundig/segment17/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 17 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 42 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 42 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 18",
+        "unique_id": "grundig_led_grundig_segment18",
+        "state_topic": "grundig_led/grundig/segment18/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 18 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 43 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 43 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 19",
+        "unique_id": "grundig_led_grundig_segment19",
+        "state_topic": "grundig_led/grundig/segment19/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 19 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 44 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 44 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 20",
+        "unique_id": "grundig_led_grundig_segment20",
+        "state_topic": "grundig_led/grundig/segment20/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 20 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 45 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 45 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 21",
+        "unique_id": "grundig_led_grundig_segment21",
+        "state_topic": "grundig_led/grundig/segment21/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 21 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 46 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 46 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 22",
+        "unique_id": "grundig_led_grundig_segment22",
+        "state_topic": "grundig_led/grundig/segment22/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 22 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 47 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 47 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 23",
+        "unique_id": "grundig_led_grundig_segment23",
+        "state_topic": "grundig_led/grundig/segment23/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 23 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 48 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 48 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 24",
+        "unique_id": "grundig_led_grundig_segment24",
+        "state_topic": "grundig_led/grundig/segment24/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 24 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 49 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 49 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Segment 25",
+        "unique_id": "grundig_led_grundig_segment25",
+        "state_topic": "grundig_led/grundig/segment25/get",
+        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[0] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 25 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 50 1; if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "SetChannel 50 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "RGB vsechny segmenty",
+        "unique_id": "grundig_led_grundig_rgb",
+        "state_topic": "grundig_led/grundig/state/get",
+        "state_template": "{{ 'on' if value_json[0] == 1 else 'off' }}",
+        "brightness_template": "{{ (value_json[1] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[4] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[4] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[4] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 60 {{ red * 65536 + green * 256 + blue }}; grundig_global; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}if $CH51!=2 then SetChannel 51 1",
+        "command_off_template": "if $CH51==1 then SetChannel 51 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Bila CCT",
+        "unique_id": "grundig_led_grundig_white",
+        "state_topic": "grundig_led/grundig/state/get",
+        "state_template": "{{ 'on' if value_json[0] == 2 else 'off' }}",
+        "brightness_template": "{{ (value_json[2] * 255 / 100) | round(0) | int }}",
+        "color_temp_kelvin": true,
+        "min_kelvin": 2700,
+        "max_kelvin": 6500,
+        "color_temp_template": "{{ 2700 + value_json[3] * 38 }}",
+        "command_on_template": "{% if brightness is defined %}SetChannel 53 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}{% if color_temp is defined %}SetChannel 54 {{ [[((color_temp - 2700) / 38) | round(0) | int, 0] | max, 100] | min }}; {% endif %}SetChannel 51 2",
+        "command_off_template": "if $CH51==2 then SetChannel 51 0"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "PixelAnim",
+        "unique_id": "grundig_led_grundig_animation",
+        "state_topic": "grundig_led/grundig/state/get",
+        "state_template": "{{ 'on' if value_json[0] == 3 else 'off' }}",
+        "brightness_template": "{{ (value_json[6] * 255 / 100) | round(0) | int }}",
+        "effect_list": [
+          "Rainbow Cycle",
+          "Fire",
+          "Shooting Star",
+          "Comet",
+          "Theater Chase",
+          "Theater Chase Rainbow"
+        ],
+        "effect_template": "{{ [\"Rainbow Cycle\",\"Fire\",\"Shooting Star\",\"Comet\",\"Theater Chase\",\"Theater Chase Rainbow\"][value_json[5] | int] }}",
+        "command_on_template": "{% if brightness is defined %}SetChannel 61 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}{% if effect is defined %}SetChannel 0 {{ [\"Rainbow Cycle\",\"Fire\",\"Shooting Star\",\"Comet\",\"Theater Chase\",\"Theater Chase Rainbow\"].index(effect) }}; {% endif %}SetChannel 51 3",
+        "command_off_template": "if $CH51==3 then SetChannel 51 0"
+      }
+    },
+    {
+      "number": {
+        "name": "PixelAnim interval",
+        "unique_id": "grundig_led_grundig_animation_interval",
+        "command_topic": "cmnd/grundig_led/SetChannel",
+        "command_template": "62 {{ value | int }}",
+        "state_topic": "grundig_led/grundig/state/get",
+        "value_template": "{{ value_json[7] }}",
+        "availability_topic": "grundig_led/connected",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "mode": "slider",
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        }
+      }
+    }
+  ]
+}
