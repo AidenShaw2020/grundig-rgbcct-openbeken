@@ -184,9 +184,21 @@ does not need to reconnect Wi-Fi.
 
 Software and device readback tests cover mode changes, stored colors,
 transaction retries, RGB-picker routing, and hidden generic power controls.
-RGB selection was also confirmed working by the user. A brief flash before
-the startup script runs remains unresolved, electrical margins are unmeasured,
-and support for different strip lengths or hardware revisions is untested.
+RGB selection was also confirmed working by the user.
+
+A fresh installation on a **second matching BK7231N module and Grundig strip**
+was completed with OpenBeken 1.18.319. Its 32 kB LittleFS was backed up and
+expanded to 64 kB with permission, and all uploaded files were verified by
+exact readback. RGB, white, and animation mode checks passed. The user
+confirmed that the whole second strip lit red at 5% RGB brightness and that
+interactive control worked after a software restart. Pin assignments, the
+short startup command, and 64 kB LittleFS persisted across that restart.
+The strict OFF-after-restart check on this unit was inconclusive during
+interactive testing, so it is not an additional verification of startup OFF.
+
+A brief flash before the startup script runs remains unresolved, electrical
+margins are unmeasured, and support for different strip lengths or hardware
+revisions is untested.
 
 ## License
 
