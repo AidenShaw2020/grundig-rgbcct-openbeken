@@ -16,4 +16,5 @@ HANDOFF*.md
 !/captures/README.md
 /device/grundig-state.bat
 /device/native-recovery-ram.json
+/device/upgrade.local/
 *.gz

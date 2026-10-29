@@ -46,8 +46,8 @@ main{max-width:1120px;margin:auto;padding:22px 20px 36px}section{padding:20px 0;
 <script>
 'use strict';
 const byId = id => document.getElementById(id);
-const persistentChannels = [0, ...Array.from({length: 50}, (_, index) => index + 1), 52, 53, 54, 60, 61, 62];
-const stateChannels = [...persistentChannels, 51, 56, 57, 58, 59];
+const persistentChannels = [0, ...Array.from({length: 54}, (_, index) => index + 1), 60, 61, 62, 63];
+const stateChannels = [...persistentChannels, 56, 57, 58, 59];
 let state = null;
 let busy = false;
 let connected = false;
@@ -60,14 +60,15 @@ function validateState(values) {
         if (!Number.isInteger(values[channel])) throw Error('Neplatny stav kanalu ' + channel);
     }
     for (let segment = 1; segment <= 25; segment++) {
-        if (values[segment] < 0 || values[segment] > 16777215 || ![0, 1].includes(values[segment + 25])) throw Error('Neplatny stav segmentu ' + segment);
+        const level = values[segment + 25];
+        if (values[segment] < 0 || values[segment] > 16777215 || level < 0 || level > 1001 || ![0, 1].includes(level % 10)) throw Error('Neplatny stav segmentu ' + segment);
     }
     if (![0, 1, 2, 3].includes(values[51]) || [52, 53, 54, 61].some(channel => values[channel] < 0 || values[channel] > 100)) throw Error('Neplatne nastaveni svetla');
     if (values[0] < 0 || values[0] > 5 || values[60] < 0 || values[60] > 16777215 || values[62] < 0 || values[62] > 10) throw Error('Neplatne nastaveni animace');
     return values;
 }
 function stateFile(values) {
-    return persistentChannels.map(channel => 'SetChannel ' + channel + ' ' + values[channel]).join('\n') + '\nSetChannel 63 1\nreturn\n';
+    return persistentChannels.map(channel => 'SetChannel ' + channel + ' ' + values[channel]).join('\n') + '\nSetChannel 56 5\nreturn\n';
 }
 function command(text) {
     const pending = commandQueue.then(() => sendCommand(text));
@@ -123,7 +124,9 @@ function paint(values) {
     for (let segment = 1; segment <= 25; segment++) {
         byId('color-' + segment).value = colorHex(values[segment]);
         byId('hex-' + segment).textContent = colorHex(values[segment]).toUpperCase();
-        byId('on-' + segment).checked = values[segment + 25] !== 0;
+        byId('on-' + segment).checked = values[segment + 25] % 10 === 1;
+        byId('level-' + segment).value = Math.trunc(values[segment + 25] / 10);
+        byId('level-value-' + segment).textContent = Math.trunc(values[segment + 25] / 10) + ' %';
     }
     if (values[57] !== values[58]) return;
     const canvas = byId('strip');
@@ -139,7 +142,7 @@ function paint(values) {
     for (let segment = 1; segment <= 25; segment++) {
         const packed = values[segment];
         let rgb = [(packed >> 16) & 255, (packed >> 8) & 255, packed & 255];
-        if (values[51] === 1) rgb = rgb.map(value => Math.trunc(value * values[52] / 100) * values[segment + 25]);
+        if (values[51] === 1) rgb = rgb.map(value => Math.trunc(value * values[52] / 100 * Math.trunc(values[segment + 25] / 10) / 100) * (values[segment + 25] % 10));
         else if (values[51] === 2) {
             const brightness = Math.trunc(values[53] * 255 / 100);
             rgb = [brightness, Math.trunc(brightness * (0.72 + values[54] * 0.0028)), Math.trunc(brightness * (0.38 + values[54] * 0.0062))];
@@ -222,22 +225,29 @@ function change(values) {
     });
 }
 async function save() {
-    await locked(async values => {
-        const content = stateFile(values);
-        const url = '/api/lfs/grundig-state.bat';
-        const response = await fetch(url, {method: 'POST', body: content, signal: AbortSignal.timeout(6000)});
-        if (!response.ok) throw Error('Ulozeni selhalo');
-        const stored = await (await fetch(url + '?fresh=' + Date.now(), {cache: 'no-store', signal: AbortSignal.timeout(6000)})).text();
-        if (stored !== content) throw Error('Ulozeny soubor nesouhlasi');
+    if (busy || !connected) return;
+    busy = true;
+    failure = '';
+    availability();
+    status('Ukl\u00e1d\u00e1m...');
+    try {
+        await command('startScript grundig-persist.bat save 705');
         byId('saved-status').textContent = 'Ulo\u017eeno ' + new Date().toLocaleTimeString('cs-CZ');
-    });
+    } catch (error) {
+        failure = 'Ulo\u017een\u00ed selhalo: ' + error.message;
+    } finally {
+        busy = false;
+        try { await refresh(); } catch (error) { connected = false; availability(); status(failure || error.message, true); }
+    }
 }
 for (let segment = 1; segment <= 25; segment++) {
     const item = document.createElement('article');
     item.className = 'segment';
-    item.innerHTML = '<div class="segment-top"><strong>' + String(segment).padStart(2, '0') + '</strong><label><input type="checkbox" id="on-' + segment + '" aria-label="Segment ' + segment + ' zapnuty"> ON</label></div><div class="segment-color"><input type="color" id="color-' + segment + '" aria-label="Barva segmentu ' + segment + '"><output id="hex-' + segment + '"></output></div>';
+    item.innerHTML = '<div class="segment-top"><strong>' + String(segment).padStart(2, '0') + '</strong><label><input type="checkbox" id="on-' + segment + '" aria-label="Segment ' + segment + ' zapnuty"> ON</label></div><div class="segment-color"><input type="color" id="color-' + segment + '" aria-label="Barva segmentu ' + segment + '"><output id="hex-' + segment + '"></output></div><div class="control"><label for="level-' + segment + '">Jas <output id="level-value-' + segment + '"></output></label><input type="range" id="level-' + segment + '" min="0" max="100"></div>';
     byId('segments').append(item);
-    byId('on-' + segment).addEventListener('change', event => change({[segment + 25]: Number(event.target.checked)}));
+    byId('on-' + segment).addEventListener('change', event => change({[segment + 25]: state[segment + 25] - state[segment + 25] % 10 + Number(event.target.checked)}));
+    byId('level-' + segment).addEventListener('input', event => { byId('level-value-' + segment).textContent = event.target.value + ' %'; });
+    byId('level-' + segment).addEventListener('change', event => change({[segment + 25]: Number(event.target.value) * 10 + state[segment + 25] % 10}));
     byId('color-' + segment).addEventListener('change', event => change({[segment]: parseInt(event.target.value.slice(1), 16)}));
 }
 document.querySelectorAll('input[name=mode]').forEach(input => input.addEventListener('change', () => change({51: Number(input.value)})));
@@ -248,7 +258,7 @@ for (const [id, channel, output, suffix] of [['rgb-brightness', 52, 'rgb-value',
 byId('apply-global').addEventListener('click', () => {
     const color = parseInt(byId('global-color').value.slice(1), 16);
     const values = {60: color};
-    for (let segment = 1; segment <= 25; segment++) { values[segment] = color; values[segment + 25] = 1; }
+    for (let segment = 1; segment <= 25; segment++) { values[segment] = color; values[segment + 25] = state[segment + 25] - state[segment + 25] % 10 + 1; }
     change(values);
 });
 byId('save').addEventListener('click', save);

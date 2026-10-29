@@ -4,6 +4,110 @@ import {readFileSync} from 'node:fs';
 import {createContext, runInContext, Script} from 'node:vm';
 import {gzipSync, gunzipSync} from 'node:zlib';
 
+if (process.argv.includes('--check-persistence')) {
+    const source = readFileSync(new URL('../device/grundig-persist.bat', import.meta.url), 'utf8').replace(/\r/g, '');
+    const renderer = readFileSync(new URL('../device/grundig.bat', import.meta.url), 'utf8').replace(/\r/g, '');
+    const publication = renderer.split('publish:\n')[1];
+    assert.equal((publication.match(/^publish /gm) || []).length, 26);
+    assert.equal((publication.match(/^delay_s 0.1/gm) || []).length, 25);
+    assert(!/\npublish [^\n]+\npublish /.test(publication));
+    assert(!/\blfs_(?:write|writeLine|append|appendLine|appendInt|appendFloat)\b/.test(source), 'Runtime LittleFS writes are forbidden');
+    assert(renderer.includes('stopScript 704 1'));
+    assert(renderer.includes('if $CH56>=4096&&$CH63%64>=21 then goto migrate_start'));
+    assert(renderer.includes('if $CH63!=1&&$CH56!=3&&$CH56!=5 then goto restore_wait'));
+    const saveLines = source.slice(source.indexOf('save:\n'), source.indexOf('\nsave_wait:\n')).split('\n');
+    const migrateLines = source.slice(source.indexOf('migrate:\n'), source.indexOf('\nlegacy:\n')).split('\n');
+    assert(saveLines.length <= 20, 'save must execute in a single 20-line QuickTick quantum');
+    assert(migrateLines.length <= 20, 'migrate unpack must execute in a single 20-line QuickTick quantum');
+    assert(source.split('\n').every(line => line.length < 256), 'Script lines must fit initial SVM buffer');
+    const evaluate = (expression, values) => Math.trunc(runInContext(
+        expression.replace(/\$CH(\d+)/g, (_, channel) => String(values[channel]))
+            .replace(/\(([^()]+)\/(\d+)\)%/g, 'Math.trunc(($1)/$2)%'),
+        createContext(),
+    ));
+    function save(values, startValues) {
+        for (const line of saveLines.slice(3, -1)) {
+            assert(line.startsWith('backlog '), 'Expected grouped backlog line in save');
+            for (const subcommand of line.slice(8).split(';')) {
+                const startMatch = subcommand.match(/^SetStartValue (\d+) (.+)$/);
+                const channelMatch = subcommand.match(/^SetChannel (\d+) (.+)$/);
+                assert(startMatch || channelMatch, 'Invalid save subcommand: ' + subcommand);
+                if (startMatch) {
+                    const slot = Number(startMatch[1]);
+                    const encoded = evaluate(startMatch[2], values);
+                    assert(Number.isInteger(encoded) && encoded >= 0 && encoded <= 32767, `Invalid SetStartValue[${slot}]: ${encoded}`);
+                    startValues[slot] = encoded;
+                } else {
+                    values[channelMatch[1]] = evaluate(channelMatch[2], values);
+                }
+            }
+        }
+    }
+    function unpack(values) {
+        assert(values[56] >= 4096 && values[63] % 64 >= 21, 'Expected packed startup sentinels');
+        for (const line of migrateLines.slice(3, -1)) {
+            if (line === 'Ch56 4' || line === 'SetChannel 56 4') {
+                values[56] = 4;
+                continue;
+            }
+            assert(line.startsWith('backlog '), 'Expected grouped backlog line in migrate');
+            for (const subcommand of line.slice(8).split(';')) {
+                const match = subcommand.match(/^(?:SetChannel |Ch)(\d+) (.+)$/);
+                assert(match, 'Invalid migrate subcommand: ' + subcommand);
+                values[match[1]] = evaluate(match[2], values);
+            }
+        }
+    }
+    const sample = Object.fromEntries(Array.from({length: 64}, (_, channel) => [channel, 0]));
+    Object.assign(sample, {
+        0: 5, 1: 16777215, 2: 16195592, 3: 65416, 4: 1, 5: 255, 6: 65535, 12: 12345678,
+        13: 8765432, 16: 11184810, 24: 16711935, 25: 255, 26: 1001, 27: 730, 28: 151,
+        49: 10, 50: 991, 51: 2, 52: 73, 53: 41, 54: 29, 57: 8, 58: 8, 60: 16711680, 61: 17, 62: 4, 63: 12,
+    });
+    for (let channel = 29; channel <= 48; channel++) sample[channel] = (channel - 25) * 40 + (channel % 2);
+    const startValues = Object.fromEntries(Array.from({length: 64}, (_, channel) => [channel, 0]));
+    const live = {...sample};
+    save(live, startValues);
+    assert.equal(live[63], 22);
+    assert.equal(startValues[0], 0, 'CH0 start value must remain 0 because led_enableAll 0 zeroes CH0');
+    assert(startValues[56] >= 4096 && startValues[56] <= 8191, 'Missing CH56 packed sentinel');
+    const booted = {...startValues};
+    unpack(booted);
+    assert.equal(booted[56], 4);
+    assert.equal(booted[63], 22);
+    for (const channel of [0, ...Array.from({length: 54}, (_, index) => index + 1), 60, 61, 62]) {
+        assert.equal(booted[channel], sample[channel], 'Restored channel differs: ' + channel);
+    }
+    Object.assign(live, {51: 0, 57: 9, 58: 9});
+    save(live, startValues);
+    const bootedOff = {...startValues};
+    unpack(bootedOff);
+    assert.equal(bootedOff[51], 0);
+    assert.equal(bootedOff[63], 22);
+    const animLines = renderer.slice(renderer.indexOf('animation:\n'), renderer.indexOf('\nanimation_retry:\n')).split('\n');
+    assert(animLines.length <= 14, 'animation path must fit in a single 20-line QuickTick quantum from render:');
+    assert(animLines.every(line => line.length < 256), 'Animation script lines must fit initial SVM buffer');
+    const animState = {...sample, 51: 3, 55: 8, 56: 1, 57: 8, 58: 7, 59: 0};
+    animState[59] = 701 + animState[0] * 1024;
+    for (const line of animLines.filter(entry => entry.startsWith('backlog Ch'))) {
+        for (const subcommand of line.slice(8).split(';')) {
+            const match = subcommand.match(/^Ch(\d+) (.+)$/);
+            assert(match, 'Invalid animation channel subcommand: ' + subcommand);
+            const value = evaluate(match[2], animState);
+            assert(Number.isInteger(value) && value >= 0 && value <= 16777215, 'Out-of-range animation channel value');
+            animState[match[1]] = value;
+        }
+        if (line.startsWith('backlog Ch30 ')) {
+            for (let channel = 0; channel <= 4; channel++) animState[channel] = 0;
+        }
+    }
+    for (const channel of [0, 1, 2, 3, 4, 26, 27, 28, 29, 30, 31, 32, 33]) {
+        assert.equal(animState[channel], sample[channel], 'Animation clobbered channel: ' + channel);
+    }
+    console.log('PASS: paced single-flight MQTT, atomic single-quantum SetStartValue persistence, full 24-bit RGB precision, ON/OFF profiles');
+    process.exit(0);
+}
+
 if (process.argv.includes('--check-ui')) {
     const html = readFileSync(new URL('../device/grundig.html', import.meta.url), 'utf8');
     const source = html.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -30,12 +134,12 @@ if (process.argv.includes('--check-ui')) {
     assert.equal(requests, 2);
     assert.equal(revision, 1);
     context.sample = Object.fromEntries(Array.from({length: 64}, (_, channel) => [channel, 0]));
-    Object.assign(context.sample, {51: 3, 56: 2, 60: 65416, 61: 10, 62: 1});
+    Object.assign(context.sample, {51: 3, 56: 2, 60: 65416, 61: 10, 62: 1, 63: 13});
     runInContext('validateState(sample)', context);
     const saved = runInContext('stateFile(sample)', context);
-    for (const channel of [0, 60, 61, 62]) assert(saved.includes('SetChannel ' + channel + ' ' + context.sample[channel] + '\n'));
-    assert(!saved.includes('SetChannel 51 '));
-    console.log('PASS: UI syntax, transport retry after lost commit response, single revision, animation profile, OFF boot');
+    for (const channel of [0, 51, 60, 61, 62, 63]) assert(saved.includes('SetChannel ' + channel + ' ' + context.sample[channel] + '\n'));
+    assert(saved.includes('SetChannel 56 5\nreturn\n'));
+    console.log('PASS: UI syntax, transport retry after lost commit response, single revision, full power/mode/color profile');
     const nativeSource = readFileSync(new URL('../device/grundig-rgb.js', import.meta.url), 'utf8');
     const row = {textContent: 'Channel RGB = 65416', hidden: false};
     const toggleRow = {hidden: false};

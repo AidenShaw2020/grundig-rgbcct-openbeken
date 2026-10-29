@@ -20,14 +20,13 @@ Product revisions may differ; verify your own board and strip before connecting 
 ## What Works
 
 - OFF, RGB, tunable white, and six native PixelAnim effects.
-- 25 individually colored and switchable RGB segments on the tested 5 m strip.
-- Shared RGB brightness, separate white brightness, and warm/cool mixing.
+- 25 individually colored, dimmable, and switchable RGB segments on the tested 5 m strip.
+- Global RGB brightness, per-segment RGB brightness, separate white brightness, and warm/cool mixing.
 - Standalone local web control without a cloud service.
 - An RGB picker adapted to the custom renderer in the original OpenBeken menu.
-- A physical button for OFF/RGB and an IR receiver pin assignment.
-- Optional MQTT package: 25 segment lights, global RGB, CCT white, animation,
-  and animation interval.
-- Explicit profile saving; startup restores settings but keeps the strip OFF.
+- A physical button toggle (OFF / last active mode) and an IR receiver pin assignment.
+- MQTT package and automated MQTT Discovery: 25 segment lights, master light, global RGB, CCT white, animation, mode select, and animation brightness/interval.
+- Automatic zero-LittleFS-write profile persistence via `SetStartValue` (`grundig-persist.bat`), restoring power state, last active mode, and all 25 24-bit segment colors across restarts.
 
 ## Hardware And Safety
 
@@ -60,8 +59,9 @@ Obtain firmware and board-specific flashing instructions from
    unrelated outputs onto the virtual channels used by this project.
 2. Ensure LittleFS has enough space; the tested device uses **64 kB**.
    Back up the filesystem first. Do not blindly format or resize an existing device.
-3. Upload the following files through the OpenBeken LittleFS interface:
+3. Upload the following files through the OpenBeken LittleFS interface (or build and upload a verified 64 KiB LittleFS image using `tools/upgrade_device.mjs`):
    - `device/grundig.bat` as `grundig.bat`.
+   - `device/grundig-persist.bat` as `grundig-persist.bat`.
    - `device/autoexec.bat` as `autoexec.bat` (merge with an existing startup file).
    - `device/grundig-state.example.bat` as **`grundig-state.bat`** for a fresh
      installation only. Do not overwrite an existing saved profile.
@@ -89,10 +89,12 @@ Wi-Fi and MQTT credentials are configured separately on your own device.
 
 Select the mode using `Grundig - rezim`. In RGB mode, the native picker
 `Grundig RGB - barva` copies a chosen color to all 25 segments. The separate
-segment page also offers individual RGB colors and ON/OFF switches.
+segment page also offers individual RGB colors, per-segment brightness sliders,
+and ON/OFF switches.
 
 Changing RGB colors does not leave white mode: white deliberately takes
-priority. Brightness is common to all RGB segments, not independent per segment.
+priority. Global RGB brightness scales all RGB segments alongside each
+segment's individual brightness level.
 
 Generic OpenBeken LED commands are not a safe interface to this renderer:
 they can overwrite the SPI buffer or virtual channels. `Toggle Light` is
@@ -126,8 +128,10 @@ homeassistant:
 
 Do not publish your locally generated IDs or broker credentials. Command
 messages are not retained, and entities wait for device state rather than
-assuming a command succeeded. MQTT transport and package loading in a running
-Home Assistant instance have **not** been verified in this setup.
+assuming a command succeeded. Alternatively, `node tools/upgrade_device.mjs --discovery http://<device-ip>`
+publishes 34 retained Home Assistant MQTT Discovery configurations directly
+through the device's configured MQTT connection (escaping `$` as `\u0024` so
+OpenBeken's `publishFile` does not expand `$CH...` channel templates).
 
 ## Protocol And Tools
 
@@ -161,6 +165,7 @@ firmware is not bundled.
 Offline checks, without contacting or changing the LED controller:
 
 ```powershell
+node tools/check_device.mjs --check-persistence
 node tools/check_device.mjs --check-ui
 node tools/generate_ha.mjs --check
 ```

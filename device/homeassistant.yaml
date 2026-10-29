@@ -21,13 +21,13 @@
         "name": "Segment 01",
         "unique_id": "grundig_led_grundig_segment01",
         "state_topic": "grundig_led/grundig/segment01/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 1 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 26 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 26 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 1 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 26 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 26 $CH26-$CH26%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 26 $CH26-$CH26%10"
       }
     },
     {
@@ -51,13 +51,13 @@
         "name": "Segment 02",
         "unique_id": "grundig_led_grundig_segment02",
         "state_topic": "grundig_led/grundig/segment02/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 2 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 27 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 27 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 2 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 27 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 27 $CH27-$CH27%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 27 $CH27-$CH27%10"
       }
     },
     {
@@ -81,13 +81,13 @@
         "name": "Segment 03",
         "unique_id": "grundig_led_grundig_segment03",
         "state_topic": "grundig_led/grundig/segment03/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 3 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 28 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 28 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 3 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 28 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 28 $CH28-$CH28%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 28 $CH28-$CH28%10"
       }
     },
     {
@@ -111,13 +111,13 @@
         "name": "Segment 04",
         "unique_id": "grundig_led_grundig_segment04",
         "state_topic": "grundig_led/grundig/segment04/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 4 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 29 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 29 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 4 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 29 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 29 $CH29-$CH29%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 29 $CH29-$CH29%10"
       }
     },
     {
@@ -141,13 +141,13 @@
         "name": "Segment 05",
         "unique_id": "grundig_led_grundig_segment05",
         "state_topic": "grundig_led/grundig/segment05/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 5 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 30 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 30 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 5 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 30 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 30 $CH30-$CH30%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 30 $CH30-$CH30%10"
       }
     },
     {
@@ -171,13 +171,13 @@
         "name": "Segment 06",
         "unique_id": "grundig_led_grundig_segment06",
         "state_topic": "grundig_led/grundig/segment06/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 6 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 31 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 31 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 6 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 31 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 31 $CH31-$CH31%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 31 $CH31-$CH31%10"
       }
     },
     {
@@ -201,13 +201,13 @@
         "name": "Segment 07",
         "unique_id": "grundig_led_grundig_segment07",
         "state_topic": "grundig_led/grundig/segment07/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 7 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 32 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 32 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 7 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 32 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 32 $CH32-$CH32%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 32 $CH32-$CH32%10"
       }
     },
     {
@@ -231,13 +231,13 @@
         "name": "Segment 08",
         "unique_id": "grundig_led_grundig_segment08",
         "state_topic": "grundig_led/grundig/segment08/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 8 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 33 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 33 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 8 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 33 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 33 $CH33-$CH33%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 33 $CH33-$CH33%10"
       }
     },
     {
@@ -261,13 +261,13 @@
         "name": "Segment 09",
         "unique_id": "grundig_led_grundig_segment09",
         "state_topic": "grundig_led/grundig/segment09/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 9 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 34 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 34 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 9 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 34 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 34 $CH34-$CH34%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 34 $CH34-$CH34%10"
       }
     },
     {
@@ -291,13 +291,13 @@
         "name": "Segment 10",
         "unique_id": "grundig_led_grundig_segment10",
         "state_topic": "grundig_led/grundig/segment10/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 10 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 35 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 35 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 10 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 35 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 35 $CH35-$CH35%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 35 $CH35-$CH35%10"
       }
     },
     {
@@ -321,13 +321,13 @@
         "name": "Segment 11",
         "unique_id": "grundig_led_grundig_segment11",
         "state_topic": "grundig_led/grundig/segment11/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 11 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 36 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 36 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 11 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 36 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 36 $CH36-$CH36%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 36 $CH36-$CH36%10"
       }
     },
     {
@@ -351,13 +351,13 @@
         "name": "Segment 12",
         "unique_id": "grundig_led_grundig_segment12",
         "state_topic": "grundig_led/grundig/segment12/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 12 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 37 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 37 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 12 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 37 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 37 $CH37-$CH37%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 37 $CH37-$CH37%10"
       }
     },
     {
@@ -381,13 +381,13 @@
         "name": "Segment 13",
         "unique_id": "grundig_led_grundig_segment13",
         "state_topic": "grundig_led/grundig/segment13/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 13 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 38 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 38 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 13 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 38 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 38 $CH38-$CH38%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 38 $CH38-$CH38%10"
       }
     },
     {
@@ -411,13 +411,13 @@
         "name": "Segment 14",
         "unique_id": "grundig_led_grundig_segment14",
         "state_topic": "grundig_led/grundig/segment14/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 14 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 39 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 39 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 14 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 39 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 39 $CH39-$CH39%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 39 $CH39-$CH39%10"
       }
     },
     {
@@ -441,13 +441,13 @@
         "name": "Segment 15",
         "unique_id": "grundig_led_grundig_segment15",
         "state_topic": "grundig_led/grundig/segment15/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 15 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 40 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 40 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 15 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 40 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 40 $CH40-$CH40%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 40 $CH40-$CH40%10"
       }
     },
     {
@@ -471,13 +471,13 @@
         "name": "Segment 16",
         "unique_id": "grundig_led_grundig_segment16",
         "state_topic": "grundig_led/grundig/segment16/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 16 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 41 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 41 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 16 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 41 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 41 $CH41-$CH41%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 41 $CH41-$CH41%10"
       }
     },
     {
@@ -501,13 +501,13 @@
         "name": "Segment 17",
         "unique_id": "grundig_led_grundig_segment17",
         "state_topic": "grundig_led/grundig/segment17/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 17 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 42 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 42 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 17 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 42 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 42 $CH42-$CH42%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 42 $CH42-$CH42%10"
       }
     },
     {
@@ -531,13 +531,13 @@
         "name": "Segment 18",
         "unique_id": "grundig_led_grundig_segment18",
         "state_topic": "grundig_led/grundig/segment18/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 18 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 43 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 43 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 18 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 43 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 43 $CH43-$CH43%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 43 $CH43-$CH43%10"
       }
     },
     {
@@ -561,13 +561,13 @@
         "name": "Segment 19",
         "unique_id": "grundig_led_grundig_segment19",
         "state_topic": "grundig_led/grundig/segment19/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 19 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 44 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 44 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 19 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 44 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 44 $CH44-$CH44%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 44 $CH44-$CH44%10"
       }
     },
     {
@@ -591,13 +591,13 @@
         "name": "Segment 20",
         "unique_id": "grundig_led_grundig_segment20",
         "state_topic": "grundig_led/grundig/segment20/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 20 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 45 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 45 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 20 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 45 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 45 $CH45-$CH45%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 45 $CH45-$CH45%10"
       }
     },
     {
@@ -621,13 +621,13 @@
         "name": "Segment 21",
         "unique_id": "grundig_led_grundig_segment21",
         "state_topic": "grundig_led/grundig/segment21/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 21 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 46 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 46 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 21 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 46 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 46 $CH46-$CH46%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 46 $CH46-$CH46%10"
       }
     },
     {
@@ -651,13 +651,13 @@
         "name": "Segment 22",
         "unique_id": "grundig_led_grundig_segment22",
         "state_topic": "grundig_led/grundig/segment22/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 22 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 47 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 47 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 22 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 47 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 47 $CH47-$CH47%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 47 $CH47-$CH47%10"
       }
     },
     {
@@ -681,13 +681,13 @@
         "name": "Segment 23",
         "unique_id": "grundig_led_grundig_segment23",
         "state_topic": "grundig_led/grundig/segment23/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 23 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 48 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 48 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 23 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 48 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 48 $CH48-$CH48%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 48 $CH48-$CH48%10"
       }
     },
     {
@@ -711,13 +711,13 @@
         "name": "Segment 24",
         "unique_id": "grundig_led_grundig_segment24",
         "state_topic": "grundig_led/grundig/segment24/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 24 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 49 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 49 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 24 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 49 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 49 $CH49-$CH49%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 49 $CH49-$CH49%10"
       }
     },
     {
@@ -741,13 +741,43 @@
         "name": "Segment 25",
         "unique_id": "grundig_led_grundig_segment25",
         "state_topic": "grundig_led/grundig/segment25/get",
-        "state_template": "{{ 'on' if value_json[1] == 1 and value_json[2] == 1 else 'off' }}",
-        "brightness_template": "{{ (value_json[3] * 255 / 100) | round(0) | int }}",
+        "state_template": "{{ 'on' if value_json[1] % 10 == 1 and value_json[2] == 1 else 'off' }}",
+        "brightness_template": "{{ ((value_json[1] // 10) * 255 / 100) | round(0) | int }}",
         "red_template": "{{ (value_json[0] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[0] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[0] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 25 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 50 1; if $CH51!=2 then SetChannel 51 1",
-        "command_off_template": "SetChannel 50 0"
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 25 {{ red * 65536 + green * 256 + blue }}; {% endif %}{% if brightness is defined %}SetChannel 50 {{ (brightness * 100 / 255) | round(0) | int * 10 + 1 }}; {% else %}SetChannel 50 $CH50-$CH50%10+1; {% endif %}SetChannel 51 1",
+        "command_off_template": "SetChannel 50 $CH50-$CH50%10"
+      }
+    },
+    {
+      "light": {
+        "schema": "template",
+        "command_topic": "cmnd/grundig_led/Backlog",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "optimistic": false,
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        },
+        "name": "Light",
+        "unique_id": "grundig_led_grundig_light",
+        "state_topic": "grundig_led/grundig/state/get",
+        "state_template": "{{ 'on' if value_json[0] != 0 else 'off' }}",
+        "brightness_template": "{{ (value_json[[1, 2, 6][(value_json[8] | int % 10) - 1]] * 255 / 100) | round(0) | int }}",
+        "red_template": "{{ (value_json[4] | int // 65536) % 256 }}",
+        "green_template": "{{ (value_json[4] | int // 256) % 256 }}",
+        "blue_template": "{{ value_json[4] | int % 256 }}",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 60 {{ red * 65536 + green * 256 + blue }}; grundig_global; {% endif %}{% if brightness is defined %}{% if red is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% else %}if $CH63%10==1 then SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; if $CH63%10==2 then SetChannel 53 {{ (brightness * 100 / 255) | round(0) | int }}; if $CH63%10==3 then SetChannel 61 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}{% endif %}{% if red is defined %}SetChannel 51 1{% else %}grundig_on{% endif %}",
+        "command_off_template": "SetChannel 51 0"
       }
     },
     {
@@ -776,7 +806,7 @@
         "red_template": "{{ (value_json[4] | int // 65536) % 256 }}",
         "green_template": "{{ (value_json[4] | int // 256) % 256 }}",
         "blue_template": "{{ value_json[4] | int % 256 }}",
-        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 60 {{ red * 65536 + green * 256 + blue }}; grundig_global; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}if $CH51!=2 then SetChannel 51 1",
+        "command_on_template": "{% if red is defined and green is defined and blue is defined %}SetChannel 60 {{ red * 65536 + green * 256 + blue }}; grundig_global; {% endif %}{% if brightness is defined %}SetChannel 52 {{ (brightness * 100 / 255) | round(0) | int }}; {% endif %}SetChannel 51 1",
         "command_off_template": "if $CH51==1 then SetChannel 51 0"
       }
     },
@@ -849,6 +879,34 @@
     },
     {
       "number": {
+        "name": "PixelAnim - jas",
+        "unique_id": "grundig_led_grundig_animation_brightness",
+        "command_topic": "cmnd/grundig_led/SetChannel",
+        "command_template": "61 {{ value | int }}",
+        "state_topic": "grundig_led/grundig/state/get",
+        "value_template": "{{ value_json[6] | int }}",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit_of_measurement": "%",
+        "mode": "slider",
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        }
+      }
+    },
+    {
+      "number": {
         "name": "PixelAnim interval",
         "unique_id": "grundig_led_grundig_animation_interval",
         "command_topic": "cmnd/grundig_led/SetChannel",
@@ -856,10 +914,107 @@
         "state_topic": "grundig_led/grundig/state/get",
         "value_template": "{{ value_json[7] }}",
         "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
         "min": 0,
         "max": 10,
         "step": 1,
         "mode": "slider",
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        }
+      }
+    },
+    {
+      "select": {
+        "name": "PixelAnim - interval",
+        "unique_id": "grundig_led_grundig_animation_interval_select",
+        "options": [
+          "Minimum",
+          "Plynuly",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "Pomalu"
+        ],
+        "command_topic": "cmnd/grundig_led/SetChannel",
+        "command_template": "62 {{ ['Minimum', 'Plynuly', '2', '3', '4', '5', '6', '7', '8', '9', 'Pomalu'].index(value) }}",
+        "state_topic": "grundig_led/grundig/state/get",
+        "value_template": "{{ ['Minimum', 'Plynuly', '2', '3', '4', '5', '6', '7', '8', '9', 'Pomalu'][value_json[7] | int] }}",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        }
+      }
+    },
+    {
+      "select": {
+        "name": "PixelAnim - efekt",
+        "unique_id": "grundig_led_grundig_animation_effect",
+        "options": [
+          "Rainbow Cycle",
+          "Fire",
+          "Shooting Star",
+          "Comet",
+          "Theater Chase",
+          "Theater Chase Rainbow"
+        ],
+        "command_topic": "cmnd/grundig_led/SetChannel",
+        "command_template": "0 {{ [\"Rainbow Cycle\",\"Fire\",\"Shooting Star\",\"Comet\",\"Theater Chase\",\"Theater Chase Rainbow\"].index(value) }}",
+        "state_topic": "grundig_led/grundig/state/get",
+        "value_template": "{{ [\"Rainbow Cycle\",\"Fire\",\"Shooting Star\",\"Comet\",\"Theater Chase\",\"Theater Chase Rainbow\"][value_json[5] | int] }}",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
+        "retain": false,
+        "qos": 0,
+        "device": {
+          "identifiers": [
+            "grundig_led"
+          ],
+          "name": "Grundig RGB+CCT",
+          "manufacturer": "Grundig",
+          "model": "3221698 / BK7231N OpenBeken"
+        }
+      }
+    },
+    {
+      "select": {
+        "name": "Rezim",
+        "unique_id": "grundig_led_grundig_mode",
+        "options": [
+          "RGB",
+          "Bila",
+          "PixelAnim"
+        ],
+        "command_topic": "cmnd/grundig_led/SetChannel",
+        "command_template": "51 {{ ['RGB', 'Bila', 'PixelAnim'].index(value) + 1 }}",
+        "state_topic": "grundig_led/grundig/state/get",
+        "value_template": "{{ ['RGB', 'Bila', 'PixelAnim'][(value_json[8] | int % 10) - 1] }}",
+        "availability_topic": "grundig_led/connected",
+        "payload_available": "online",
+        "payload_not_available": "offline",
         "retain": false,
         "qos": 0,
         "device": {
